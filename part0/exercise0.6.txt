@@ -1,0 +1,33 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note over browser,server: START
+
+    Note right of browser: User types the URL in the browser and hits Enter
+    browser->+server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    server-->browser: HTML document
+
+    Note right of browser: Browser receives HTML document and starts interpreting interpreting
+    Note right of browser: CSS file seen in header
+    browser->+server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    server-->browser: CSS file
+
+    Note right of browser: Browser sees a script file
+    browser->+server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    server-->browser: JS file
+
+    Note right of browser: Browser executes JS file; intepreter needs JSON file from server
+    browser->+server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    server-->browser: JSON file
+
+    Note right of browser: Browser renders data from JSON file
+
+    Note over browser,server: Full webpage already visible
+
+    Note right of browser: User types data in text field and clicks 'Save' button. 
+    Note right of browser: However, instead of sending the whole form to the server, only the newly created JSON object is sent
+    browser->+server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    server-->browser: HTTP Response
+    
+    browser->browser: Calls redrawNotes() from JS file 
