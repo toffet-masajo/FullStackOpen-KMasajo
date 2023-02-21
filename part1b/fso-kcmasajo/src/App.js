@@ -5,6 +5,14 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const StatisticLine = (props) => {
+    const {text, value} = props;
+
+    return (
+      <div>{text} {value}</div>
+    );
+  }
+
   const Statistics = (props) => {
     const {good, neutral, bad} = props;
     const total = good + neutral + bad;
@@ -20,12 +28,12 @@ const App = () => {
     return (
       <div>
         <h2>statistics</h2>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {total}</div>
-        <div>average {(good-bad)/total}</div>
-        <div>positive {(good*100)/total} %</div>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={total} />
+        <StatisticLine text="average" value={(good-bad)/total} />
+        <StatisticLine text="positive" value={(good*100)/total} />
       </div>
     );
   }
