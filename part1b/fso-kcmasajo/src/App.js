@@ -9,6 +9,14 @@ const App = () => {
     const {good, neutral, bad} = props;
     const total = good + neutral + bad;
 
+    if(total <= 0 ) {
+      return (
+        <div>
+          <h2>statistics</h2>
+          No feedback given
+        </div>
+      );
+    }
     return (
       <div>
         <h2>statistics</h2>
