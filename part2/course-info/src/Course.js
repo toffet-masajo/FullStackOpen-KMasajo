@@ -10,7 +10,7 @@ const Course = ({course}) => {
         <p>{part.name} {part.exercises}</p>
         </div>
       )}
-      <strong><p>total of {total} exercises</p></strong>
+      <b>total of {total} exercises</b>
     </div>
   )
 };
