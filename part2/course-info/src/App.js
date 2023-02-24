@@ -1,20 +1,4 @@
-
-const Course = ({course}) => {
-  const total = 
-    course.parts.reduce((sum, {exercises}) => (sum + exercises), 0);
-
-  return (
-    <div key={course.id}>
-      <h1>{course.name}</h1>
-      {course.parts.map(({id, name, exercises}) =>
-        <div key={id}>
-          <p>{name} {exercises}</p>
-        </div>
-      )}
-      <b>total of {total} exercises</b>
-    </div>
-  )
-};
+import Course from './Course'
 
 const App = () => {
   const courses = [
