@@ -4,7 +4,7 @@ const Course = ({course}) => {
 
   return (
     <div key={course.id}>
-      <h1>{course.name}</h1>
+      <h2>{course.name}</h2>
       {course.parts.map((part) =>
         <div key={part.id}>
         <p>{part.name} {part.exercises}</p>
