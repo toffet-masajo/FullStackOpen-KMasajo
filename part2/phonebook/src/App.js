@@ -11,7 +11,9 @@ const App = () => {
   const handleAdd = (event) => {
     event.preventDefault();
 
-    setPersons(persons.concat({ name: newName }));
+    const duplicate = persons.filter((person) => person.name === newName);
+    if(duplicate.length > 0) alert(`${newName} is already added in the phonebook`);
+    else setPersons(persons.concat({ name: newName }));
   };
 
   return (
