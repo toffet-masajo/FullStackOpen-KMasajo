@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+import Filter from './Filter'
+import PersonForm from './PersonForm'
+import Persons from './Persons'
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -18,33 +22,30 @@ const App = () => {
   const handleAdd = (event) => {
     event.preventDefault();
 
-    const duplicate = persons.filter((person) => person.name === newName);
-    if(duplicate.length > 0) alert(`${newName} is already added in the phonebook`);
+    if(persons.filter((person) => person.name === newName).length > 0) 
+      alert(`${newName} is already added in the phonebook`);
     else setPersons(persons.concat({ name: newName, number: newNumber, id: persons.length+1 }));
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleAdd}>
-        <div>
-          filter shown with: <input value={filter} onChange={handleFilterChange} />
-        </div>
-      <h2>add a new</h2>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {persons
-        .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-        .map(person => <div key={person.id}>{person.name} {person.number}</div>)}
+
+      <Filter value={filter} handler={handleFilterChange} />
+      
+      <h3>Add a new</h3>
+      
+      <PersonForm 
+        name={newName} 
+        nameHandler={handleNameChange} 
+        number={newNumber}
+        numberHandler={handleNumberChange}
+        formHandler={handleAdd}
+        />
+      
+      <h3>Numbers</h3>
+      
+      <Persons data={persons} filter={filter} />
     </div>
   )
 }
