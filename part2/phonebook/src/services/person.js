@@ -12,4 +12,9 @@ const add = (person) => {
   return req.then(res => res.data);
 };
 
-export default {getAll, add};
+const del = (id) => {
+  const req = axios.delete(`${url}/${id}`);
+  return req.then(res => res);
+}
+
+export default {getAll, add, del};
