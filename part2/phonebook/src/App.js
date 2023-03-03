@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 
 import PersonService from './services/person';
-import Filter from './Filter'
-import PersonForm from './PersonForm'
-import Persons from './Persons'
+import Filter from './Filter';
+import Message from './Message';
+import PersonForm from './PersonForm';
+import Persons from './Persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('');
+  const [message, setMessage] = useState(null);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
@@ -38,6 +40,10 @@ const App = () => {
             setPersons(persons.map(person => {
               if(person.id === matches[0].id) {
                 person.number = data.number;
+                setMessage(`Updated ${person.name}'s number`);
+                setTimeout(() => {
+                  setMessage(null);
+                }, 5000);
               }
               return person;
             }));
@@ -50,6 +56,10 @@ const App = () => {
         .add(newPerson)
         .then(data => {
           setPersons(persons.concat(data));
+          setMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
     }
   };
@@ -58,13 +68,23 @@ const App = () => {
     PersonService
       .del(id)
       .then(res => {
-        setPersons(persons.filter(person => person.id !== id));
+        setPersons(persons.filter(person => {
+          if(person.id !== id) return person;
+          
+          setMessage(`Deleted ${person.name}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+          return null;
+        }));
       });
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Message value={message} />
 
       <Filter value={filter} handler={handleFilterChange} />
       
