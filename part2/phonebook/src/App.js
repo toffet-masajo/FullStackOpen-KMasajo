@@ -26,8 +26,24 @@ const App = () => {
   const handleAdd = (event) => {
     event.preventDefault();
 
-    if(persons.filter((person) => person.name === newName).length > 0) 
-      alert(`${newName} is already added in the phonebook`);
+    const matches = persons.filter((person) => person.name === newName);
+    if(matches.length > 0) {
+      if(matches[0].name === newName && matches[0].number === newNumber)
+        alert(`${newName} is already added in the phonebook`);
+      else if(window.confirm(`${matches[0].name} is already added to phonebook, replace the old number with a new one?`)) {
+        const updatedInfo = {...matches[0], number: newNumber};
+        PersonService
+          .update(updatedInfo)
+          .then(data => {
+            setPersons(persons.map(person => {
+              if(person.id === matches[0].id) {
+                person.number = data.number;
+              }
+              return person;
+            }));
+          });
+      }
+    } 
     else {
       const newPerson = { name: newName, number: newNumber };
       PersonService
