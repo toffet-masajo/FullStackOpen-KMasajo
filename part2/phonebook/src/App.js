@@ -10,7 +10,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('');
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState({message: null, type: null});
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
@@ -40,9 +40,9 @@ const App = () => {
             setPersons(persons.map(person => {
               if(person.id === matches[0].id) {
                 person.number = data.number;
-                setMessage(`Updated ${person.name}'s number`);
+                setMessage({message: `Updated ${person.name}'s number`, type: 'ok'});
                 setTimeout(() => {
-                  setMessage(null);
+                  setMessage({message: null, type: null});
                 }, 5000);
               }
               return person;
@@ -56,9 +56,9 @@ const App = () => {
         .add(newPerson)
         .then(data => {
           setPersons(persons.concat(data));
-          setMessage(`Added ${newName}`);
+          setMessage({message: `Added ${newName}`, type: 'ok'});
           setTimeout(() => {
-            setMessage(null);
+            setMessage({message: null, type: null});
           }, 5000);
         });
     }
@@ -71,12 +71,20 @@ const App = () => {
         setPersons(persons.filter(person => {
           if(person.id !== id) return person;
           
-          setMessage(`Deleted ${person.name}`);
+          setMessage({message: `Deleted ${person.name}`, type: 'ok'});
           setTimeout(() => {
-            setMessage(null);
+            setMessage({message: null, type: null});
           }, 5000);
           return null;
         }));
+      })
+      .catch(error => {
+        const person = persons.filter(item => item.id === id);
+        setMessage({message: `Information of ${person[0].name} has already been removed from server`, type: 'ng'});
+          setTimeout(() => {
+            setPersons(persons.filter(item => item.id !== id));
+            setMessage({message: null, type: null});
+          }, 5000);
       });
   };
 
@@ -84,7 +92,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Message value={message} />
+      <Message value={message.message} type={message.type} />
 
       <Filter value={filter} handler={handleFilterChange} />
       
