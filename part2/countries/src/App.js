@@ -34,7 +34,12 @@ const App = () => {
         </div>
       );
     } else if(list.length <= 10) {
-      return list.map(item => <div key={item.cca2}>{item.name.common}</div>);
+      return list.map(item =>
+        <div key={item.cca2}>
+          {item.name.common}
+          <button onClick={() => setFilter(item.name.common)}>show</button>
+        </div>
+      );
     }
     return 'Too many matches, specify another filter'
   }
