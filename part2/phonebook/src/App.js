@@ -47,6 +47,12 @@ const App = () => {
               }
               return person;
             }));
+          })
+          .catch(error => {
+            setMessage({message: error.response.data.error, type: 'ng'});
+            setTimeout(() => {
+              setMessage({message: null, type: null});
+            }, 5000);
           });
       }
     } 
@@ -57,6 +63,12 @@ const App = () => {
         .then(data => {
           setPersons(persons.concat(data));
           setMessage({message: `Added ${newName}`, type: 'ok'});
+          setTimeout(() => {
+            setMessage({message: null, type: null});
+          }, 5000);
+        })
+        .catch(error => {
+          setMessage({message: error.response.data.error, type: 'ng'});
           setTimeout(() => {
             setMessage({message: null, type: null});
           }, 5000);
